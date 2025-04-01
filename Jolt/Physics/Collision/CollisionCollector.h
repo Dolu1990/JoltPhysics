@@ -98,12 +98,18 @@ public:
 	/// Get the current early out value but make sure it's bigger than zero, this is used for shape casting as negative values are used for penetration
 	inline float			GetPositiveEarlyOutFraction() const				{ return max(FLT_MIN, mEarlyOutFraction); }
 
+        inline bool IsValidDeltaV() { return mDeltaV >= 0.0f; }
+        inline void SetDeltaV(float value) { mDeltaV = value; }
+        inline float GetDeltaV() { return mDeltaV; }
 private:
 	/// The early out fraction determines the fraction below which the collector is still accepting a hit (can be used to reduce the amount of work)
 	float					mEarlyOutFraction = TraitsType::InitialEarlyOutFraction;
 
 	/// Set by the collision detection functions to the current TransformedShape of the body that we're colliding against before calling the AddHit function
 	const TransformedShape *mContext = nullptr;
+
+        /// Specify the velocity difference between the two body being checked
+        float mDeltaV = -1.0f;
 };
 
 JPH_NAMESPACE_END

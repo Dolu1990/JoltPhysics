@@ -1153,7 +1153,8 @@ void PhysicsSystem::ProcessBodyPair(ContactAllocator &ioContactAllocator, const 
 				bool				mValidateBodyPair = true;
 				Manifolds			mManifolds;
 			};
-			ReductionCollideShapeCollector collector(this, body1, body2);
+                        ReductionCollideShapeCollector collector(this, body1, body2);
+                        collector.SetDeltaV((body1->GetLinearVelocity() - body2->GetLinearVelocity()).Length());
 
 			// Perform collision detection between the two shapes
 			mSimCollideBodyVsBody(*body1, *body2, transform1, transform2, settings, collector, shape_filter);
