@@ -82,6 +82,8 @@ public:
 
 	/// If convex shapes should be treated as solid. When true, a ray starting inside a convex shape will generate a hit at fraction 0.
 	bool						mTreatConvexAsSolid			= true;
+
+        bool mUseMeshIfAvailable = true;
 };
 
 JPH_NAMESPACE_END
