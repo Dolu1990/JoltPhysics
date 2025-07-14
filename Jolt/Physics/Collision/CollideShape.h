@@ -101,6 +101,7 @@ public:
 
 	/// How backfacing triangles should be treated
 	EBackFaceMode				mBackFaceMode				= EBackFaceMode::IgnoreBackFaces;
+        int customShapeId = -1;
 };
 
 JPH_NAMESPACE_END
