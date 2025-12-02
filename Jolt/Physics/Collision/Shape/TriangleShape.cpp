@@ -248,7 +248,8 @@ void TriangleShape::CastRay(const RayCast &inRay, const RayCastSettings &inRayCa
 		return;
 
 	// Back facing check
-	if (inRayCastSettings.mBackFaceModeTriangles == EBackFaceMode::IgnoreBackFaces && (mV2 - mV1).Cross(mV3 - mV1).Dot(inRay.mDirection) > 0.0f)
+        bool backface = (mV2 - mV1).Cross(mV3 - mV1).Dot(inRay.mDirection) > 0.0f;
+        if (inRayCastSettings.mBackFaceModeTriangles == EBackFaceMode::IgnoreBackFaces && backface)
 		return;
 
 	// Test ray against triangle
@@ -260,6 +261,7 @@ void TriangleShape::CastRay(const RayCast &inRay, const RayCastSettings &inRayCa
 		hit.mBodyID = TransformedShape::sGetBodyID(ioCollector.GetContext());
 		hit.mFraction = fraction;
 		hit.mSubShapeID2 = inSubShapeIDCreator.GetID();
+                hit.mBackFace = backface;
 		ioCollector.AddHit(hit);
 	}
 }

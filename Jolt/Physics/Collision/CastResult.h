@@ -32,6 +32,8 @@ public:
 	JPH_OVERRIDE_NEW_DELETE
 
 	SubShapeID		mSubShapeID2;						///< Sub shape ID of shape that we collided against
+        SubShapeID mSubShapePart;
+        bool mBackFace = false;
 };
 
 JPH_NAMESPACE_END

@@ -228,6 +228,7 @@ void PlaneShape::CastRay(const RayCast &inRay, const RayCastSettings &inRayCastS
 			hit.mBodyID = TransformedShape::sGetBodyID(ioCollector.GetContext());
 			hit.mFraction = fraction;
 			hit.mSubShapeID2 = inSubShapeIDCreator.GetID();
+                        hit.mBackFace = dot > 0;
 			ioCollector.AddHit(hit);
 		}
 	}

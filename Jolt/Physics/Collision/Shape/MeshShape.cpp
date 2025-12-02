@@ -792,7 +792,8 @@ void MeshShape::CastRay(const RayCast &inRay, const RayCastSettings &inRayCastSe
 		JPH_INLINE void		VisitTriangle(Vec3Arg inV0, Vec3Arg inV1, Vec3Arg inV2, [[maybe_unused]] uint8 inActiveEdges, SubShapeID inSubShapeID2)
 		{
 			// Back facing check
-			if (mBackFaceMode == EBackFaceMode::IgnoreBackFaces && (inV2 - inV0).Cross(inV1 - inV0).Dot(mRayDirection) < 0)
+                        bool backface = (inV2 - inV0).Cross(inV1 - inV0).Dot(mRayDirection) < 0;
+                        if (mBackFaceMode == EBackFaceMode::IgnoreBackFaces && backface)
 				return;
 
 			// Check the triangle
@@ -803,6 +804,7 @@ void MeshShape::CastRay(const RayCast &inRay, const RayCastSettings &inRayCastSe
 				hit.mBodyID = TransformedShape::sGetBodyID(mCollector.GetContext());
 				hit.mFraction = fraction;
 				hit.mSubShapeID2 = inSubShapeID2;
+                                hit.mBackFace = backface;
 				mCollector.AddHit(hit);
 			}
 		}
