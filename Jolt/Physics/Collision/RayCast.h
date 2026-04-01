@@ -84,6 +84,7 @@ public:
 	bool						mTreatConvexAsSolid			= true;
 
         bool mUseMeshIfAvailable = true;
+        bool mIncludeVoxel = true;
 };
 
 JPH_NAMESPACE_END
