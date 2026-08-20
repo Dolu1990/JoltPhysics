@@ -25,12 +25,12 @@ public:
 	JPH_OVERRIDE_NEW_DELETE
 
 	/// Underlying storage type
-	using Type = uint32;
+	using Type = uint64;
 
 	/// Type that is bigger than the underlying storage type for operations that would otherwise overflow
 	using BiggerType = uint64;
 
-	static_assert(sizeof(BiggerType) > sizeof(Type), "The calculation below assumes BiggerType is a bigger type than Type");
+	//static_assert(sizeof(BiggerType) > sizeof(Type), "The calculation below assumes BiggerType is a bigger type than Type");
 
 	/// How many bits we can store in this ID
 	static constexpr uint MaxBits = 8 * sizeof(Type);

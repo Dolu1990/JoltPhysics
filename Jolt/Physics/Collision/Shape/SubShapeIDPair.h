@@ -18,7 +18,7 @@ public:
 
 	/// Constructor
 							SubShapeIDPair() = default;
-							SubShapeIDPair(const BodyID &inBody1ID, const SubShapeID &inSubShapeID1, const BodyID &inBody2ID, const SubShapeID &inSubShapeID2) : mBody1ID(inBody1ID), mSubShapeID1(inSubShapeID1), mBody2ID(inBody2ID), mSubShapeID2(inSubShapeID2) { }
+							SubShapeIDPair(const BodyID &inBody1ID, const SubShapeID &inSubShapeID1, const BodyID &inBody2ID, const SubShapeID &inSubShapeID2) : mBody1ID(inBody1ID), mBody2ID(inBody2ID), mSubShapeID1(inSubShapeID1),  mSubShapeID2(inSubShapeID2) { }
 	SubShapeIDPair &		operator = (const SubShapeIDPair &) = default;
 							SubShapeIDPair(const SubShapeIDPair &) = default;
 
@@ -52,13 +52,13 @@ public:
 
 private:
 	BodyID					mBody1ID;
-	SubShapeID				mSubShapeID1;
 	BodyID					mBody2ID;
+	SubShapeID				mSubShapeID1;
 	SubShapeID				mSubShapeID2;
 };
 
-static_assert(sizeof(SubShapeIDPair) == 16, "Unexpected size");
-static_assert(alignof(SubShapeIDPair) == 4, "Assuming 4 byte aligned");
+static_assert(sizeof(SubShapeIDPair) == 24, "Unexpected size");
+static_assert(alignof(SubShapeIDPair) == 8, "Assuming 4 byte aligned");
 
 JPH_NAMESPACE_END
 
