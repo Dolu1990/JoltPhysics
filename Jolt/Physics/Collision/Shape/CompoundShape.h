@@ -277,7 +277,7 @@ public:
 	/// @return The index of the sub shape of this compound
 	inline uint32					GetSubShapeIndexFromID(SubShapeID inSubShapeID, SubShapeID &outRemainder) const
 	{
-		uint32 idx = inSubShapeID.PopID(GetSubShapeIDBits(), outRemainder);
+		uint32 idx = uint32(inSubShapeID.PopID(GetSubShapeIDBits(), outRemainder));
 		JPH_ASSERT(idx < mSubShapes.size(), "Invalid SubShapeID");
 		return idx;
 	}

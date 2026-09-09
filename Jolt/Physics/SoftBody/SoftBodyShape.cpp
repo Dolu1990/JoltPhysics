@@ -32,7 +32,7 @@ uint SoftBodyShape::GetSubShapeIDBits() const
 uint32 SoftBodyShape::GetFaceIndex(const SubShapeID &inSubShapeID) const
 {
 	SubShapeID remainder;
-	uint32 face_index = inSubShapeID.PopID(GetSubShapeIDBits(), remainder);
+	uint32 face_index = uint32(inSubShapeID.PopID(GetSubShapeIDBits(), remainder));
 	JPH_ASSERT(remainder.IsEmpty());
 	return face_index;
 }
@@ -122,7 +122,7 @@ void SoftBodyShape::CollideSoftBodyVertices(Mat44Arg inCenterOfMassTransform, Ve
 const PhysicsMaterial *SoftBodyShape::GetMaterial(const SubShapeID &inSubShapeID) const
 {
 	SubShapeID remainder;
-	uint triangle_idx = inSubShapeID.PopID(GetSubShapeIDBits(), remainder);
+	uint triangle_idx = uint32(inSubShapeID.PopID(GetSubShapeIDBits(), remainder));
 	JPH_ASSERT(remainder.IsEmpty());
 
 	const SoftBodyMotionProperties::Face &f = mSoftBodyMotionProperties->GetFace(triangle_idx);
@@ -132,7 +132,7 @@ const PhysicsMaterial *SoftBodyShape::GetMaterial(const SubShapeID &inSubShapeID
 Vec3 SoftBodyShape::GetSurfaceNormal(const SubShapeID &inSubShapeID, Vec3Arg inLocalSurfacePosition) const
 {
 	SubShapeID remainder;
-	uint triangle_idx = inSubShapeID.PopID(GetSubShapeIDBits(), remainder);
+	uint triangle_idx = uint32(inSubShapeID.PopID(GetSubShapeIDBits(), remainder));
 	JPH_ASSERT(remainder.IsEmpty());
 
 	const SoftBodyMotionProperties::Face &f = mSoftBodyMotionProperties->GetFace(triangle_idx);
@@ -148,7 +148,7 @@ Vec3 SoftBodyShape::GetSurfaceNormal(const SubShapeID &inSubShapeID, Vec3Arg inL
 void SoftBodyShape::GetSupportingFace(const SubShapeID &inSubShapeID, Vec3Arg inDirection, Vec3Arg inScale, Mat44Arg inCenterOfMassTransform, SupportingFace &outVertices) const
 {
 	SubShapeID remainder;
-	uint triangle_idx = inSubShapeID.PopID(GetSubShapeIDBits(), remainder);
+	uint triangle_idx = uint32(inSubShapeID.PopID(GetSubShapeIDBits(), remainder));
 	JPH_ASSERT(remainder.IsEmpty());
 
 	const SoftBodyMotionProperties::Face &f = mSoftBodyMotionProperties->GetFace(triangle_idx);

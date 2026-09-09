@@ -1461,7 +1461,7 @@ void HeightFieldShape::DecodeSubShapeID(const SubShapeID &inSubShapeID, uint &ou
 {
 	// Decode sub shape id
 	SubShapeID remainder;
-	uint32 id = inSubShapeID.PopID(GetSubShapeIDBits(), remainder);
+	uint32 id = uint32(inSubShapeID.PopID(GetSubShapeIDBits(), remainder));
 	JPH_ASSERT(remainder.IsEmpty(), "Invalid subshape ID");
 
 	// Get triangle index

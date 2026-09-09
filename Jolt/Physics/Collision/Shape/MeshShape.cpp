@@ -394,12 +394,12 @@ void MeshShape::DecodeSubShapeID(const SubShapeID &inSubShapeID, const void *&ou
 {
 	// Get block
 	SubShapeID triangle_idx_subshape_id;
-	uint32 block_id = inSubShapeID.PopID(NodeCodec::DecodingContext::sTriangleBlockIDBits(sGetNodeHeader(mTree)), triangle_idx_subshape_id);
+	uint32 block_id = uint32(inSubShapeID.PopID(NodeCodec::DecodingContext::sTriangleBlockIDBits(sGetNodeHeader(mTree)), triangle_idx_subshape_id));
 	outTriangleBlock = NodeCodec::DecodingContext::sGetTriangleBlockStart(&mTree[0], block_id);
 
 	// Fetch the triangle index
 	SubShapeID remainder;
-	outTriangleIndex = triangle_idx_subshape_id.PopID(NumTriangleBits, remainder);
+	outTriangleIndex = uint32(triangle_idx_subshape_id.PopID(NumTriangleBits, remainder));
 	JPH_ASSERT(remainder.IsEmpty(), "Invalid subshape ID");
 }
 
