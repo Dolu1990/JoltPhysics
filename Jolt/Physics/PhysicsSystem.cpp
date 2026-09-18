@@ -1153,8 +1153,14 @@ void PhysicsSystem::ProcessBodyPair(ContactAllocator &ioContactAllocator, const 
 				bool				mValidateBodyPair = true;
 				Manifolds			mManifolds;
 			};
-                        ReductionCollideShapeCollector collector(this, body1, body2);
-                        collector.SetDeltaV((body1->GetLinearVelocity() - body2->GetLinearVelocity()).Length());
+			ReductionCollideShapeCollector collector(this, body1, body2);
+
+			// Account for angular velocity by evaluating each body's velocity at the
+			// other body's center of mass. Use the smaller frame-relative velocity so
+			// the result is independent of which body is considered the reference.
+			float delta_v_body2_from_body1 = (body2->GetPointVelocity(body1->GetCenterOfMassPosition()) - body1->GetLinearVelocity()).Length();
+			float delta_v_body1_from_body2 = (body1->GetPointVelocity(body2->GetCenterOfMassPosition()) - body2->GetLinearVelocity()).Length();
+			collector.SetDeltaV(min(delta_v_body2_from_body1, delta_v_body1_from_body2));
 
 			// Perform collision detection between the two shapes
 			mSimCollideBodyVsBody(*body1, *body2, transform1, transform2, settings, collector, shape_filter);
