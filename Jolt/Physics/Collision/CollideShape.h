@@ -49,6 +49,8 @@ public:
 		result.mSubShapeID2 = mSubShapeID1;
 		result.mSubShapeID1 = mSubShapeID2;
 		result.mBodyID2 = mBodyID2;
+		result.uid1 = uid2;
+		result.uid2 = uid1;
 		result.mShape2Face = mShape1Face;
 		result.mShape1Face = mShape2Face;
 		return result;
@@ -63,6 +65,8 @@ public:
 	SubShapeID					mSubShapeID1;				///< Sub shape ID that identifies the face on shape 1
 	SubShapeID					mSubShapeID2;				///< Sub shape ID that identifies the face on shape 2
 	BodyID						mBodyID2;					///< BodyID to which shape 2 belongs to
+        uint32 uid1 = 0;                                     ///< Part owner UID for shape 1, filled by custom overlap handlers (0 when unavailable).
+        uint32 uid2 = 0;                                     ///< Part owner UID for shape 2, filled by custom overlap handlers (0 when unavailable).
 	Face						mShape1Face;				///< Colliding face on shape 1 (optional result, in world space or relative to base offset)
 	Face						mShape2Face;				///< Colliding face on shape 2 (optional result, in world space or relative to base offset)
 };

@@ -152,6 +152,8 @@ public:
 		result.mSubShapeID2 = mSubShapeID1;
 		result.mSubShapeID1 = mSubShapeID2;
 		result.mBodyID2 = mBodyID2;
+		result.uid1 = uid2;
+		result.uid2 = uid1;
 		result.mFraction = mFraction;
 		result.mIsBackFaceHit = mIsBackFaceHit;
 
