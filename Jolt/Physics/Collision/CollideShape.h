@@ -102,6 +102,9 @@ public:
 	/// How backfacing triangles should be treated
 	EBackFaceMode				mBackFaceMode				= EBackFaceMode::IgnoreBackFaces;
         int customShapeId = -1;
+
+        /// Use conservative local bounding boxes for PartShape queries instead of detailed shapes and voxel filtering.
+        bool mUsePartBoundingBox = false;
 };
 
 JPH_NAMESPACE_END
