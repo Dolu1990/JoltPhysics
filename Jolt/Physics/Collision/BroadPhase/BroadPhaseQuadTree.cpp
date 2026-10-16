@@ -445,12 +445,17 @@ void BroadPhaseQuadTree::CollideAABox(const AABox &inBox, CollideShapeBodyCollec
 
 void BroadPhaseQuadTree::CollideSphere(Vec3Arg inCenter, float inRadius, CollideShapeBodyCollector &ioCollector, const BroadPhaseLayerFilter &inBroadPhaseLayerFilter, const ObjectLayerFilter &inObjectLayerFilter) const
 {
+	// Prevent this from running in parallel with node deletion in FrameSync(), see notes there
+	shared_lock lock(mQueryLocks[mQueryLockIdx]);
+
+	CollideSphereNoLock(inCenter, inRadius, ioCollector, inBroadPhaseLayerFilter, inObjectLayerFilter);
+}
+
+void BroadPhaseQuadTree::CollideSphereNoLock(Vec3Arg inCenter, float inRadius, CollideShapeBodyCollector &ioCollector, const BroadPhaseLayerFilter &inBroadPhaseLayerFilter, const ObjectLayerFilter &inObjectLayerFilter) const
+{
 	JPH_PROFILE_FUNCTION();
 
 	JPH_ASSERT(mMaxBodies == mBodyManager->GetMaxBodies());
-
-	// Prevent this from running in parallel with node deletion in FrameSync(), see notes there
-	shared_lock lock(mQueryLocks[mQueryLockIdx]);
 
 	// Loop over all layers and test the ones that could hit
 	for (BroadPhaseLayer::Type l = 0; l < mNumLayers; ++l)

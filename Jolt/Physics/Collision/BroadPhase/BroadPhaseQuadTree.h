@@ -47,6 +47,9 @@ public:
 #endif // JPH_TRACK_BROADPHASE_STATS
 
 private:
+	virtual SharedMutex *GetQueryMutex() const override							{ return &mQueryLocks[mQueryLockIdx]; }
+	virtual void			CollideSphereNoLock(Vec3Arg inCenter, float inRadius, CollideShapeBodyCollector &ioCollector, const BroadPhaseLayerFilter &inBroadPhaseLayerFilter, const ObjectLayerFilter &inObjectLayerFilter) const override;
+
 	/// Helper struct for AddBodies handle
 	struct LayerState
 	{
