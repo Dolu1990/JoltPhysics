@@ -347,7 +347,6 @@ void CompoundShape::RestoreBinaryState(StreamIn &inStream)
 		inS.Read(outElement.mUserData);
 		inS.Read(outElement.mPositionCOM);
 		inS.Read(outElement.mRotation);
-		outElement.mIsRotationIdentity = outElement.mRotation == Float3(0, 0, 0);
 	});
 }
 

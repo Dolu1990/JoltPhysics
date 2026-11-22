@@ -178,8 +178,8 @@ public:
 		{
 			SetPositionCOM(inPosition - inCenterOfMass + inRotation * mShape->GetCenterOfMass());
 
-			mIsRotationIdentity = inRotation.IsClose(Quat::sIdentity()) || inRotation.IsClose(-Quat::sIdentity());
-			SetRotation(mIsRotationIdentity? Quat::sIdentity() : inRotation);
+			bool is_identity = inRotation.IsClose(Quat::sIdentity()) || inRotation.IsClose(-Quat::sIdentity());
+			SetRotation(is_identity? Quat::sIdentity() : inRotation);
 		}
 
 		/// Get the local transform for this shape given the scale of the child shape
@@ -195,20 +195,22 @@ public:
 		inline bool					IsValidScale(Vec3Arg inScale) const
 		{
 			// We can always handle uniform scale or identity rotations
-			if (mIsRotationIdentity || ScaleHelpers::IsUniformScale(inScale))
+			if (ScaleHelpers::IsUniformScale(inScale))
 				return true;
 
-			return ScaleHelpers::CanScaleBeRotated(GetRotation(), inScale);
+			Quat rotation = GetRotation();
+			return rotation == Quat::sIdentity() || ScaleHelpers::CanScaleBeRotated(rotation, inScale);
 		}
 
 		/// Transform the scale to the local space of the child shape
 		inline Vec3					TransformScale(Vec3Arg inScale) const
 		{
 			// We don't need to transform uniform scale or if the rotation is identity
-			if (mIsRotationIdentity || ScaleHelpers::IsUniformScale(inScale))
+			if (ScaleHelpers::IsUniformScale(inScale))
 				return inScale;
 
-			return ScaleHelpers::RotateScale(GetRotation(), inScale);
+			Quat rotation = GetRotation();
+			return rotation == Quat::sIdentity()? inScale : ScaleHelpers::RotateScale(rotation, inScale);
 		}
 
 		/// Compress the center of mass position
@@ -223,24 +225,23 @@ public:
 			return Vec3::sLoadFloat3Unsafe(mPositionCOM);
 		}
 
-		/// Compress the rotation
+		/// Store the full rotation to retain precision near half turns.
 		JPH_INLINE void				SetRotation(QuatArg inRotation)
 		{
-			inRotation.StoreFloat3(&mRotation);
+			JPH_ASSERT(inRotation.IsNormalized());
+			inRotation.GetXYZW().StoreFloat4(&mRotation);
 		}
 
-		/// Uncompress the rotation
+		/// Load the stored rotation.
 		JPH_INLINE Quat				GetRotation() const
 		{
-			return mIsRotationIdentity? Quat::sIdentity() : Quat::sLoadFloat3Unsafe(mRotation);
+			return Quat(Vec4::sLoadFloat4(&mRotation));
 		}
 
 		RefConst<Shape>				mShape;
 		Float3						mPositionCOM;											///< Note: Position of center of mass of sub shape!
-		Float3						mRotation;												///< Note: X, Y, Z of rotation quaternion - note we read 4 bytes beyond this so make sure there's something there
-		uint32						mUserData;												///< User data value (put here because it falls in padding bytes)
-		bool						mIsRotationIdentity;									///< If mRotation is close to identity (put here because it falls in padding bytes)
-		// 3 padding bytes left
+		Float4						mRotation;												///< Rotation quaternion in unaligned storage
+		uint32						mUserData;												///< User data value
 	};
 
 	static_assert(sizeof(SubShape) == (JPH_CPU_ADDRESS_BITS == 64? 40 : 36), "Compiler added unexpected padding");
